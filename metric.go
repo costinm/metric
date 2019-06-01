@@ -2,6 +2,7 @@ package metric
 
 import (
 	"encoding/json"
+	"expvar"
 	"fmt"
 	"math"
 	"sort"
@@ -29,6 +30,12 @@ type metric interface {
 }
 
 var _, _, _ metric = &counter{}, &gauge{}, &histogram{}
+
+func NewInt(name string) Metric {
+	m := NewCounter("15m30s")
+	expvar.Publish(name, m)
+	return m
+}
 
 // NewCounter returns a counter metric that increments the value with each
 // incoming number.
